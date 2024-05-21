@@ -15,7 +15,7 @@ const isLoggedIn = async (req, res, next) => {
     if (!user) {
       return res.status(401).send('Unauthorized: Invalid token');
     }
-    
+    console.log("in token user", user)
     // Attach user ID to request object for future use
     req.user = user;
     

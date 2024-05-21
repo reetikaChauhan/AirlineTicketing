@@ -6,6 +6,8 @@ const flightSchema = new mongoose.Schema({
     arrival_airport_id: {  type: mongoose.Schema.Types.ObjectId,
         ref: "airport", },
     departure_time: { type: String, index: true,required: true },
+    departure_date: { type: String, index: true,required: true },
+    arrival_date:{ type: String, index: true,required: true },
     arrival_time: { type: String, index: true,required: true },
     airline_id: {
         type: mongoose.Schema.Types.ObjectId,

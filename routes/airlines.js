@@ -4,10 +4,10 @@ const router = Router();
 const tokenDAO = require('../daos/token');
 const AirlineDAO = require('../daos/airlines');
 const isLoggedIn = require('../middleware/logged_in')
-
+const isAdmin = require('../middleware/authorization')
 
 // create
-router.post("/", async (req, res, next) => {
+router.post("/",isLoggedIn,isAdmin, async (req, res, next) => {
     const airlineobj = req.body;
     if ( JSON.stringify(airlineobj) === '{}') {
         res.status(400).send('is required');

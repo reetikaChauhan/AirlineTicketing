@@ -3,11 +3,12 @@ const router = Router();
 
 const tokenDAO = require('../daos/token');
 const FlightDAO = require('../daos/flights');
+const AirportDAO = require('../daos/airports');
 const isLoggedIn = require('../middleware/logged_in')
-
+const isAdmin = require('../middleware/authorization')
 
 // create
-router.post("/", async (req, res, next) => {
+router.post("/",isLoggedIn,isAdmin, async (req, res, next) => {
     const flightobj = req.body;
     if ( JSON.stringify(flightobj) === '{}') {
         res.status(400).send('is required');
@@ -28,16 +29,31 @@ router.post("/", async (req, res, next) => {
     }
 });
 
-// GET
-router.get("/", async (req, res, next) => {
-    try {
-        const flightresults = await FlightDAO.getFlights()
-        return res.status(200).json(flightresults);
-    } catch(e) {
-        next(e)
-    }
+// search flights by departure city and arrival city in query parameters
+router.get("/search", async (req, res, next) => {
+    const {departure_city, arrival_city} = req.query
+        try {
+            const departure_city_objs = await AirportDAO.getAirportByCity(departure_city)
+            const departureAirportIds = departure_city_objs.map(airport => airport._id);
+            const arrival_city_objs = await AirportDAO.getAirportByCity( arrival_city)
+            const arrivalAirportIds =  arrival_city_objs.map(airport => airport._id);
 
+            const flightresults = await FlightDAO.getFlightsByAirportName(departureAirportIds, arrivalAirportIds )
+            return res.status(200).json(flightresults);
+        } catch(e) {
+            next(e)
+        }
 });
+router.get("/",async (req, res, next) => {
+        try {
+            const flightresults = await FlightDAO.getFlights()
+            return res.status(200).json(flightresults);
+        } catch(e) {
+            next(e)
+        }
+    
+});
+
 
 //get by Id
 
@@ -56,6 +72,9 @@ router.get("/:id", async (req, res, next) => {
         }
     }
 });
+
+
+
 
 
   module.exports = router;

@@ -5,6 +5,7 @@ router.use("/auth", require('./auth'));
 router.use("/airports", require('./airports'));
 router.use("/airlines", require('./airlines'));
 router.use("/flights", require('./flights'));
+router.use("/bookings", require('./booking'));
 router.use("/passengers", require('./passengers'));
 
 module.exports = router;

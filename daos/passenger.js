@@ -9,7 +9,7 @@ module.exports.getPassengers = async() => {
 
 
 module.exports.getPassengersById = async (passengerId) => {
-    const passenger =  await Passenger.find({ _id: flightId }).lean();
+    const passenger =  await Passenger.find({ _id: passengerId }).lean();
     return passenger
 }
 
@@ -19,7 +19,7 @@ module.exports.passengerrec = async(userrec, userinfo) => {
         name: userinfo.name,
         phone: userinfo.phone
     }
-    const passengerobj =  await Passenger.create(passenginfo).lean();
+    const passengerobj =  await Passenger.create(passenginfo);
     return passengerobj
 }
 

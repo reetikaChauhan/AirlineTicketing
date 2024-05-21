@@ -17,7 +17,7 @@ module.exports.getAirlinesById = async (airlineId) => {
 }
 
 module.exports.createAirlinesrec = async(airlinerec) => {
-    const airlineobj =  await Airlines.create(airlinerec).lean();
+    const airlineobj =  await Airlines.create(airlinerec);
     return airlineobj
 }
 

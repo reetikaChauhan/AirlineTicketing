@@ -45,7 +45,8 @@ router.post("/signup", async (req, res, next) => {
     return res.status(400).send('email and password is required');
   } 
     try {
-        const saveduser = await userDAO.createUser(userobj);
+        const saveduser = await userDAO.create(userobj);
+        console.log("saveduser in dao", saveduser)
         return res.status(200).json(saveduser);
         
     } catch(error) {

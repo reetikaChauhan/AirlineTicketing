@@ -4,10 +4,10 @@ const router = Router();
 const tokenDAO = require('../daos/token');
 const AirportDAO = require('../daos/airports');
 const isLoggedIn = require('../middleware/logged_in')
-
+const isAdmin = require('../middleware/authorization')
 
 // create
-router.post("/", async (req, res, next) => {
+router.post("/",isLoggedIn,isAdmin, async (req, res, next) => {
     const airportobj = req.body;
     if ( JSON.stringify(airportobj) === '{}') {
         res.status(400).send('is required');
@@ -30,14 +30,28 @@ router.post("/", async (req, res, next) => {
 
 // GET
 router.get("/", async (req, res, next) => {
-    try {
-        const airportresults = await AirportDAO.getAirport()
-        return res.status(200).json(airportresults);
-    } catch(e) {
-        next(e)
+    if(req.query){
+        try {
+            const airportresults = await AirportDAO.getAirportByCity(req.query.location)
+            console.log("in airport routes", airportresults)
+            return res.status(200).json(airportresults);
+        } catch(e) {
+            next(e)
+        }
+
+    }else{
+        try {
+            const airportresults = await AirportDAO.getAirport()
+            return res.status(200).json(airportresults);
+        } catch(e) {
+            next(e)
+        }
     }
+    
 
 });
+
+
 
 //get by Id
 
