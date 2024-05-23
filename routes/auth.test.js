@@ -15,10 +15,16 @@ describe("/auth", () => {
   const user0 = {
     email: "user0@mail.com",
     password: "123password",
+    roles:"user",
+    name:"user",
+    phone:"12346"
   };
   const user1 = {
     email: "user1@mail.com",
     password: "456password",
+    roles:"user",
+    name:"user",
+    phone:"12346"
   };
 
   describe("before signup", () => {
@@ -113,8 +119,10 @@ describe("/auth", () => {
       });
       it("should return a JWT with user email, _id, and roles inside, but not password", async () => {
         const res = await request(server).post("/auth/login").send(user);
+        console.log("user value send in body", user)
         const token = res.body.token;
         const decodedToken = jwt.decode(token);
+        console.log("decodedtokenin tests", decodedToken)
         expect(decodedToken.email).toEqual(user.email);
         expect(decodedToken.roles).toEqual(["user"]);
         expect(decodedToken._id).toMatch(

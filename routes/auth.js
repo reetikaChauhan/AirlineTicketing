@@ -4,6 +4,7 @@ const router = Router();
 const tokenDAO = require('../daos/token');
 const userDAO = require('../daos/user');
 const isLoggedIn = require('../middleware/logged_in')
+const isAuthenticated = require('../middleware/authenticateservice')
 const bcrypt = require('bcrypt');
 
 router.post("/login", async (req, res, next) => {
@@ -62,10 +63,10 @@ router.post("/signup", async (req, res, next) => {
 
 
 //PUT /password
-router.put("/password",isLoggedIn, async (req, res, next) => {
+router.put("/password",isAuthenticated, async (req, res, next) => {
     const userpassword = req.body;
     if(!userpassword.password){
-        return res.status(400).send(' password is required');
+        return res.status(400).send('password is required');
     }
     const userId = req.user._id
     try {

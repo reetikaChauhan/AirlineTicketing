@@ -11,6 +11,7 @@ const isLoggedIn = async (req, res, next) => {
   try {
     // Verify token and get user ID
     const user = await tokenDAO.getUserFromToken(token);
+    console.log("i am in middleware", user)
     // If token is invalid or no user ID is found, send unauthorized response
     if (!user) {
       return res.status(401).send('Unauthorized: Invalid token');

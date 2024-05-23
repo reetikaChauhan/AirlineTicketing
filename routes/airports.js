@@ -5,9 +5,9 @@ const tokenDAO = require('../daos/token');
 const AirportDAO = require('../daos/airports');
 const isLoggedIn = require('../middleware/logged_in')
 const isAdmin = require('../middleware/authorization')
-
+const isAuthenticated = require('../middleware/authenticateservice')
 // create
-router.post("/",isLoggedIn,isAdmin, async (req, res, next) => {
+router.post("/",isAuthenticated,isAdmin, async (req, res, next) => {
     const airportobj = req.body;
     if ( JSON.stringify(airportobj) === '{}') {
         res.status(400).send('is required');

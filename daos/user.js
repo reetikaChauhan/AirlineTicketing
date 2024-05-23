@@ -19,7 +19,8 @@ module.exports.updateUserPassword = async (userId, password) => {
 module.exports.create = async(userObj) => {
     try {
         const hashedPassword = await bcrypt.hash(userObj.password, 5); // Hash the password
-        const newUser = await User.create({ email: userObj.email, password: hashedPassword, roles:[userObj.roles] }); // Create the user
+        const newUser = await User.create({ email: userObj.email, password: hashedPassword, roles:[userObj.roles],name:userObj.name, phone:userObj.phone }); // Create the user
+
         return newUser;
     } catch (error) {
         if (error.code === 11000 && error.keyPattern.email) {

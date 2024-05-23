@@ -12,7 +12,15 @@ const flightSchema = new mongoose.Schema({
     airline_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "airline",
-    } 
+    } ,
+    seat_map:{
+        type: [{
+            // Define the structure of each object in the array
+            seat_num: {type:String},
+            booked: {type: Boolean, default: false}
+            // Add more fields s needed
+          }]
+    }
 });
 
 
