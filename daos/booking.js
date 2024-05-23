@@ -132,6 +132,8 @@ module.exports.getTicketofUser = async (userID, bookingId) => {
         {
             $project: {
                 _id: 1,
+               seat:1,
+               status:1,
                passenger_name:'$passenger_info.name',
                Phone:'$passenger_info.phone',
                Email:'$passenger_info.email',

@@ -4,6 +4,7 @@ const router = Router();
 const mongoose = require('mongoose');
 const tokenDAO = require('../daos/token');
 const BookingDAO = require('../daos/booking');
+const FlightDAO = require('../daos/flights');
 const isLoggedIn = require('../middleware/logged_in')
 const isAdmin = require('../middleware/authorization')
 const isAuthenticated = require('../middleware/authenticateservice')
@@ -25,7 +26,12 @@ router.post("/",isAuthenticated, async (req, res, next) => {
                     if(seatmaparray[i].booked == false){
                         booked_seat = seatmaparray[i].seat_num
                         const bookingresult = await BookingDAO.bookflight(bookingobj,req.user._id, booked_seat);
-                        res.json(bookingresult)
+                        const updatedFlight = await FlightDAO.updateseatbooked(bookingobj.flight_id, booked_seat);
+                        if(bookingresult && updatedFlight){
+                            console.log("seat booked yeaaaaaa")
+                            res.status(200).json(bookingresult);
+                        }
+                       
                     }
                 }
                 

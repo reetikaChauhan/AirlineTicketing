@@ -1,4 +1,5 @@
 const Flights = require('../models/flights');
+const mongoose = require('mongoose');
 
 module.exports = {};
 
@@ -73,6 +74,27 @@ module.exports.getFlightsByAirportName = async(departureAirportIds,arrivalAirpor
   }
 }
 
+module.exports.updateseatbooked = async(flight_Id, seat_num) => {
+  try {
+    const f_Id = new mongoose.Types.ObjectId(flight_Id);
+    // Using findOneAndUpdate with arrayFilters
+    const updatedFlight = await Flights.findOneAndUpdate(
+        { _id: f_Id, "seat_map.seat_num": seat_num },
+        { $set: { "seat_map.$.booked": true } },
+        { new: true } // This option returns the updated document
+    ).lean();
+
+    if (!updatedFlight) {
+        throw new Error('Flight or seat not found');
+    }
+
+    console.log('Updated flight:', updatedFlight);
+    return updatedFlight;
+} catch (err) {
+    console.error('Error updating seat status:', err);
+    throw err;
+}
+}
 
 module.exports.createFlightrec = async(flightrec) => {
     const flightobj =  await Flights.create(flightrec);
